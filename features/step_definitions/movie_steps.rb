@@ -9,7 +9,8 @@ Given /the following movies exist/ do |movies_table|
 #   end
   Movie.delete_all
   movies_table.hashes.each do |movie|
-    Movie.create(:title => movie[:title], :release_date => movie[:release_date], :rating => movie[:rating])
+    #Movie.create(:title => movie[:title], :release_date => movie[:release_date], :rating => movie[:rating])
+    Movie.create(movie)
     # each returned element will be a hash whose key is the table header.
     # you should arrange to add that movie to the database here.
   end
@@ -60,4 +61,9 @@ Then /I should see movies: (.*)/ do |movieList|
     i = page.body.index(title)
     assert(i != nil, "Movie " + title + " NOT found!\nIndex: " + i.to_s + "\nPage:\n" + page.body)
   end
+end
+
+Then /the director of "(.*)" should be "(.*)"/ do |movieTitle, movieDirector|
+  movie = Movie.find_by_title(movieTitle)
+  assert(movie[:director] == movieDirector)
 end

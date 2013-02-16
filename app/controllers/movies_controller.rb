@@ -1,5 +1,17 @@
 class MoviesController < ApplicationController
 
+  def similar
+    id = params[:id]
+    @id = id
+    @movie = Movie.find(id)
+    director = @movie[:director]
+    if director == nil or director == ""
+      redirect_to movies_path
+    end
+    @director = director
+    @movies = Movie.find_all_by_director(director)
+  end
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
